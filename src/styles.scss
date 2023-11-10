@@ -1,1 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+.required-field {
+  @apply flex gap-2 before:content-['*'] before:text-red-500;
+}
+
+//.ng-dropdown-panel {
+//  @apply z-10 bg-gray-100 border py-1 rounded border-t-0;
+//  .ng-option {
+//    @apply cursor-pointer px-2;
+//    &:hover {
+//      @apply bg-gray-200;
+//    }
+//  }
+//}
+
+body {
+  //@apply bg-gray-100;
+}
