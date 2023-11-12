@@ -10,9 +10,13 @@
   </ng-container>
   <div class="flex flex-col gap-3 w-full">
     <label class="font-medium">Tipo de Usuario</label>
-    <ng-select formControlName="typeUser" [items]="['ADMIN', 'COMMON']"/>
-    <app-error-message *ngIf="myForm.get('typeUser') !== null" [errors]="['required']"
-                       [control]="myForm.get('typeUser')!"/>
+    <ng-select formControlName="userType" [items]="['ADMIN', 'COMMON']"/>
+    <app-error-message *ngIf="myForm.get('userType') !== null" [errors]="['required']"
+                       [control]="myForm.get('userType')!"/>
   </div>
-  <button class="w-full bg-black text-white rounded px-2 py-1 text-center">Signup</button>
+  <button (click)="signUp()"
+          class="mt-5 text-center bg-black text-amber-50 w-full px-2 py-1 hover:bg-[rgba(0,0,0,0.8)] flex gap-2 justify-center items-center">
+    <span>Sign Up</span>
+    <div *ngIf="loading" class="spinner"></div>
+  </button>
 </form>

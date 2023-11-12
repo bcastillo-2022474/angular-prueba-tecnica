@@ -17,7 +17,7 @@
           <div class="w-full sm:w-1/2 flex flex-col gap-1">
             <label class="required-field"><span>{{field.name}}</span> en <strong>{{field.unity}}</strong></label>
             <input class="px-2 py-1 rounded w-full border" [placeholder]="field.placeholder" type="number"
-                   required [formControlName]="field.controlName" />
+                   required [formControlName]="field.controlName"/>
             <app-error-message *ngIf="myForm.get(field.controlName) !== null" [errors]="['required', 'min']"
                                [control]="myForm.get(field.controlName)!"/>
           </div>

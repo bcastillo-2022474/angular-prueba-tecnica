@@ -1,6 +1,8 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {API} from "../constants";
+import {catchError, throwError} from "rxjs";
+import {ToastService} from "./toast.service";
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +10,7 @@ import {API} from "../constants";
 export class ShippingCalculationService {
 
   private http = inject(HttpClient);
+  private toastService = inject(ToastService)
 
   shippingCalculation(data: {
     weight: number;
@@ -18,6 +21,11 @@ export class ShippingCalculationService {
     originCountry: string,
     user?: { name: string, email: string, userType: string, userId: number }
   }) {
-    return this.http.post(`${API}/shipping/calculate`, data);
+    return this.http.post(`${API}/shipping/calculate`, data).pipe(
+      catchError(err => {
+        this.toastService.show('Error calculando costo de envío', 'danger')
+        return throwError(() => err);
+      })
+    )
   }
 }

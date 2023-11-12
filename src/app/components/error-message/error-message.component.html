@@ -1,6 +1,5 @@
-<ng-container *ngFor="let error of errors">
-  <div *ngIf="control.errors?.[error] && control.touched"
-       class="text-red-500 text-xs">{{errorMessages[error]}}
-  </div>
-</ng-container>
+<div *ngIf="getErroMessage() && control.touched"
+     class="text-red-500 text-xs">
+  {{getErroMessage()}}
+</div>
 

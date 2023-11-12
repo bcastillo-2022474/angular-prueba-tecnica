@@ -4,10 +4,10 @@ import {Country, CountryService} from "../../services/country.service";
 import {Region, RegionService} from "../../services/region.service";
 import {ShippingCalculationService} from "../../services/shipping-calculation.service";
 import {Observable} from "rxjs";
-import {NgSelectComponent} from "@ng-select/ng-select";
+import {wait} from "../../constants";
+import {ToastService} from "../../services/toast.service";
+import {AuthService, User} from "../../services/auth.service";
 
-
-const wait = (seconds: number) => new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 
 type Form = {
   weight: number,
@@ -30,6 +30,10 @@ export class ShippingCalculatorFormComponent implements OnInit {
   private countryService = inject(CountryService);
   private regionService = inject(RegionService);
   private shippingCalculationService = inject(ShippingCalculationService);
+  private toastService = inject(ToastService);
+  private authService = inject(AuthService);
+
+  currentUser: User | null = null;
   regions: Observable<Region[]> = this.regionService.getRegions()
   countries: Observable<Country[]> = this.countryService.getCountries();
   destinationCountry!: Observable<Country[]>;
@@ -37,6 +41,10 @@ export class ShippingCalculatorFormComponent implements OnInit {
   @Output() cost = new EventEmitter<number>();
 
   ngOnInit(): void {
+    this.authService.currentUser$.subscribe((currentUser) => {
+      this.currentUser = currentUser;
+    })
+
     this.myForm = this.fb.group({
       weight: ['', [Validators.required, Validators.min(0.1)]],
       width: ['', [Validators.required, Validators.min(0.1)]],
@@ -70,9 +78,8 @@ export class ShippingCalculatorFormComponent implements OnInit {
     console.log(this.myForm.valid)
     if (!this.myForm.valid) {
       // activate all validators
-      Object.keys(this.myForm.controls).forEach((controlName) => {
-        this.myForm.controls[controlName].markAsTouched();
-      });
+      this.myForm.markAllAsTouched();
+      this.toastService.show("Campos Incompletos! Por favor, complete los campos", "danger");
       return
     }
 
@@ -82,25 +89,29 @@ export class ShippingCalculatorFormComponent implements OnInit {
       height,
       length,
       region,
-      country_destination
+      country_destination,
+      country_origin
     }: Form = this.myForm.getRawValue();
 
-
     const obj = {
-      user: {name: '', email: '', userType: null as unknown as 'COMMON', userId: 10},
+      // user: {name: '', email: '', userType: null as unknown as 'COMMON', userId: 10},
+      user: this.currentUser || undefined,
       weight,
       width,
       height,
       length,
       region: region.name,
-      originCountry: '',
+      originCountry: country_origin.name,
       destinationCountry: country_destination.name
     };
 
     this.loading = true;
     this.shippingCalculationService.shippingCalculation(obj).subscribe((cost) => {
       this.cost.emit(Number(cost));
-      wait(1).then(() => this.loading = false)
+      wait(1).then(() => {
+        this.loading = false;
+        this.toastService.show("Costo de envío calculado exitosamente!", "success");
+      })
     });
   }
 
