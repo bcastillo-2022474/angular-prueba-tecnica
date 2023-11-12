@@ -1,0 +1,16 @@
+<form [formGroup]="myForm" class="flex flex-col gap-3 w-full">
+  <ng-container *ngFor="let field of formFields; trackBy: trackByFn">
+    <div class="flex flex-col gap-2 w-full">
+      <label class="font-medium">{{field.name | titlecase}}</label>
+      <input class="px-2 py-1 border rounded w-full" [type]="field.type" name="name" [placeholder]="field.placeholder"
+             [formControlName]="field.controlName"/>
+      <app-error-message *ngIf="myForm.get(field.controlName) !== null" [errors]="field.errors"
+                         [control]="myForm.get(field.controlName)!"/>
+    </div>
+  </ng-container>
+  <button class="w-full bg-black text-white rounded px-2 py-1 text-center">Login</button>
+  <div class="flex justify-center gap-2">
+    <span>Dont have an account? </span>
+    <a class="text-orange-700 underline cursor-pointer" routerLink="/signup">Sign Up</a>
+  </div>
+</form>

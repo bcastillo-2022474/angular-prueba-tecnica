@@ -8,5 +8,11 @@
   </div>
 </nav>
 <div class="p-5 flex justify-center">
-  <app-shipping-calculator-form class="flex justify-center"></app-shipping-calculator-form>
+  <app-shipping-calculator-form (cost)="showCost($event)"
+                                class="flex w-full justify-center"></app-shipping-calculator-form>
+</div>
+
+<div *ngIf="cost" class="flex flex-col justify-center items-center text-xl">
+  <div>The cost is</div>
+  <div class="text-3xl">{{cost}}</div>
 </div>

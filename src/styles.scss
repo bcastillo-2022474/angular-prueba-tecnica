@@ -9,6 +9,30 @@
   @apply flex gap-2 before:content-['*'] before:text-red-500;
 }
 
+.spinner {
+  border: 2.5px solid rgba(255, 255, 255, 0.5);
+  border-top: 2.5px solid #fff;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  //background-color: red;
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+input.ng-invalid.ng-touched {
+  @apply border-red-500 focus:outline-none focus:border-2;
+}
+
+
 //.ng-dropdown-panel {
 //  @apply z-10 bg-gray-100 border py-1 rounded border-t-0;
 //  .ng-option {

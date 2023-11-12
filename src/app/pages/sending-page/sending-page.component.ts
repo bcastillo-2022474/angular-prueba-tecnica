@@ -6,7 +6,12 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./sending-page.component.scss']
 })
 export class SendingPageComponent implements OnInit {
+  cost!: number;
+
   ngOnInit(): void {
   }
 
+  showCost(cost: number) {
+    this.cost = cost;
+  }
 }
