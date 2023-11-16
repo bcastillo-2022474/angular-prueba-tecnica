@@ -1,28 +1,28 @@
 import {inject, Injectable} from '@angular/core';
 import {catchError, Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
-import {API} from "../constants";
+import {environment} from "../../environments/environment"
 import {ToastService} from "./toast.service";
 
 export type Region = {
-  regionId: number,
-  name: string,
+    regionId: number,
+    name: string,
 }
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class RegionService {
 
-  private http = inject(HttpClient)
-  private toastService = inject(ToastService)
+    private http = inject(HttpClient)
+    private toastService = inject(ToastService)
 
-  getRegions(): Observable<Region[]> {
-    return this.http.get<Region[]>(`${API}/regions`).pipe(
-      catchError(err => {
-        this.toastService.show("Error al cargar las regiones", "danger")
-        return of([])
-      })
-    )
-  }
+    getRegions(): Observable<Region[]> {
+        return this.http.get<Region[]>(`${environment.API}/regions`).pipe(
+            catchError(err => {
+                this.toastService.show("Error al cargar las regiones", "danger")
+                return of([])
+            })
+        )
+    }
 }
